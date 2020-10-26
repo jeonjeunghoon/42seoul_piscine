@@ -1,0 +1,190 @@
+# test를 가장 첫 줄에 쓰면 해당 프로그램을 실행한다는 뜻입니다. 뒤에 차례대로 인수를 붙이면 됩니다.
+# 프로그램을 만드는 과제 (소스코드 내에 main 선언이 있는 경우)는 하나의 명령마다 ; 를 붙여야 합니다.
+
+include:
+
+	#include <stdio.h>
+	#include <stdarg.h>
+	#include <string.h>
+	#include <stdlib.h>
+
+ex00:
+	char* p = ft_strdup("Hello World!");
+	printf("content: %s\n", p);
+	printf("len: %lu\n", strlen(p));
+
+
+ex00-expected:
+content: Hello World!
+len: 12
+
+ex01-other:
+
+void print_range(int* range, int len)
+{
+	int i;
+	if (len == 0)
+	{
+		printf("if 0, it is nullptr >> %ld\n", (long)range);
+		return;
+	}
+
+	for(i = 0;i<len;i++)
+	{
+		printf("%d ", range[i]);
+	}
+	printf("\n");
+}
+
+ex01:
+	int i = 0;
+	int* range = ft_range(0, 10);
+	printf("ft_range(0, 10) >> ");
+	for(i = 0;i<10;i++)
+	{
+		printf("%d ", range[i]);
+	}
+	printf("\n");
+	printf("ft_range(30, 10) >> ");
+	print_range(ft_range(30, 10), 0);
+	printf("ft_range(6, 9) >> ");
+	print_range(ft_range(6, 9), 3);
+	printf("ft_range(-2, 10) >> ");
+	print_range(ft_range(-2, 10), 11);
+
+ex01-expected:
+ft_range(0, 10) >> 0 1 2 3 4 5 6 7 8 9 
+ft_range(30, 10) >> if 0, it is nullptr >> 0
+ft_range(6, 9) >> 6 7 8 
+ft_range(-2, 10) >> -2 -1 0 1 2 3 4 5 6 7 8
+
+ex02:
+	int i = 0;
+	int j = 0;
+	int* range;
+	j = ft_ultimate_range(&range, 0, 10);
+	printf("ft_ultimate_range(&range, 0, 10) >> ");
+	for(i = 0;i<10;i++)
+	{
+		printf("%d ", range[i]);
+	}
+	printf(" num:%d\n", j);
+	i = ft_ultimate_range(&range, 30, 10);
+	printf("ft_ultimate_range(&range, 30, 10) >> num:%d, memory: %ld\n", i, (long)range);
+	i = ft_ultimate_range(&range, 6, 6);
+	printf("ft_ultimate_range(&range, 6, 6) >> num:%d, memory: %ld\n",i,  (long)range);
+	j = ft_ultimate_range(&range, 6, 7);
+	printf("ft_ultimate_range(&range, 6, 7) >> ");
+	for(i = 0; i < 1; i++)
+	{
+		printf("%d ", range[i]);
+	}
+	printf(" num:%d\n", j);
+		j = ft_ultimate_range(&range, -2, 5);
+	printf("ft_ultimate_range(&range, -2, 5) >> ");
+	for(i = 0; i < 7; i++)
+	{
+		printf("%d ", range[i]);
+	}
+	printf(" num:%d\n", j);
+
+ex02-expected:
+
+ex03:
+	char *a[3];
+	a[0] = strdup("abc");
+	a[1] = strdup("def ho");
+	a[2] = strdup("hi yeah~");
+	printf("%s$\n", ft_strjoin(3, (char**)a, ", "));
+	printf("It should be blank >> %s\n", ft_strjoin(0, (char**)a, ", "));
+	a[0] = strdup("");
+	a[1] = strdup("");
+	a[2] = strdup("");
+	char *p;
+	printf("%s$\n", p = ft_strjoin(3, (char**)a, ", "));
+	printf("%d\n", ft_strlen(p));
+	char *strs[7] = {
+		"abc",
+		"123",
+		"def",
+		"456",
+		"ghi",
+		"789",
+		"nawaneoyaabc"
+	};
+	char sep[] = "+";
+	char *result = ft_strjoin(7, strs, sep);	
+	printf("result: %s\n", result);
+
+
+ex03-expected:
+abc, def ho, hi yeah~$
+It should be blank >> 
+, , $
+4
+result: abc+123+def+456+ghi+789+nawaneoyaabc
+ex04:
+
+	printf("%d\n", get_length_to_allocate(0, "0123456789"));
+	printf("%s\n", ft_convert_base("2147483647", "0123456789", "0123456789abcdef"));
+	printf("%s\n", ft_convert_base("-2147483648", "0123456789", "0123456789abcdef"));
+	printf("%s\n", ft_convert_base("-----7fffffff", "0123456789abcdef", "01"));
+	printf("%s\n", ft_convert_base("-++--+--0001023a", "0123456789", "0123456789"));
+	printf("%s\n", ft_convert_base("-0", "0123456789", "abcdefghij"));
+	printf("%s\n", ft_convert_base(" \t\t\t ---+++ff-f", "0123456789abcdef", "0123456789"));
+	printf("%s\n", ft_convert_base("aasdffeessddfffss", "asedf", "ss"));
+	printf("%s\n", ft_convert_base("-+-+- -+asdf", "asdf", "fdsa"));
+	printf("%s\n", ft_convert_base("  -+-+- -+asdf", "ai sdf", "fdsa"));
+	printf("%s\n", ft_convert_base("\t\t\t\t \v --++-asdf", "asdf", "fd-as"));
+	printf("%s\n", ft_convert_base("   -+a", "abcde", ""));
+	printf("%s\n", ft_convert_base(" -+a", "", "df"));
+
+ex04-expected:
+1
+7fffffff
+-80000000
+-1111111111111111111111111111111
+-1023
+a
+-255
+(null)
+f
+(null)
+(null)
+(null)
+(null)
+
+ex05-other:
+
+void print_ho(char* src, char* charset)
+{
+	char **p = ft_split(src, charset);
+	int i = -1;
+	while(p[++i])
+		printf("[%s] ", p[i]);
+	printf("\n");
+}
+
+ex05:
+	print_ho("; a; b; c; d; e; ", "");
+	print_ho("; a; b; c; d; e; ", "; ");
+	print_ho("a; b; c; d; e; ", "; ");
+	print_ho("; a; b; ; c; d; e", "; ");
+	print_ho("; a; b; ; c; d; e. ho. ", ". ");
+	print_ho("a; b; c; d; e", "; ");
+	print_ho("  \n ", " \n");
+
+ex05-expected:
+[; a; b; c; d; e; ] 
+[a] [b] [c] [d] [e] 
+[a] [b] [c] [d] [e] 
+[a] [b] [c] [d] [e] 
+[; a; b; ; c; d; e] [ho] 
+[a] [b] [c] [d] [e] 
+[ ] [ ]
+
+
+
+
+
+end:
